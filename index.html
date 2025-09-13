@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rasoiyo</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .navbar-left img {
+      height: 50px;
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .navbar-right a, .navbar-right button {
+      text-decoration: none;
+      color: #000;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .submit-btn {
+      background-color: #000;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: #000;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      min-width: 220px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 1;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .dropdown-content button {
+      width: 100%;
+      padding: 12px 20px;
+      border: none;
+      background: none;
+      text-align: left;
+      font-size: 1rem;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .dropdown-content button:hover {
+      background-color: #f2f2f2;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 80px 60px;
+      background: linear-gradient(to right, #fff 50%, #ff6600 50%);
+      border-bottom-left-radius: 120px;
+      border-top-left-radius: 120px;
+    }
+
+    .hero-left {
+      width: 50%;
+      padding-right: 40px;
+    }
+
+    .hero-left h2 {
+      font-size: 2.5rem;
+      color: #000;
+      margin-bottom: 20px;
+    }
+
+    .hero-left p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .hero-left button {
+      background-color: #000;
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    .hero-right {
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      background-color: #ff6600;
+      border-radius: 50% 0 0 50%;
+    }
+
+    .hero-right img {
+      width: 450px;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .results {
+      padding: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+
+    .dish-details {
+      padding: 40px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .dish-details img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .dish-details button {
+      margin-top: 20px;
+      background-color: #000;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="mainContent">
+    <div class="navbar">
+      <div class="navbar-left">
+        <img src="/static/images/rasoiyo_logo.png" alt="Rasoiyo Logo">
+      </div>
+      <div class="navbar-right">
+        <div class="dropdown">
+          <button class="dropbtn">Recipes</button>
+          <div class="dropdown-content">
+            <button onclick="loadRecipes('vegetarian')">Vegetarian</button>
+            <button onclick="loadRecipes('non vegetarian')">Non Vegetarian</button>
+            <button onclick="loadRecipes('high protein')">High Protein</button>
+            <button onclick="loadRecipes('high protein vegetarian')">High Protein Vegetarian</button>
+            <button onclick="loadRecipes('high protein non vegetarian')">High Protein Non Vegetarian</button>
+            <button onclick="loadRecipes('gluten free')">Gluten Free</button>
+            <button onclick="loadRecipes('diabetic friendly')">Diabetic Friendly</button>
+          </div>
+        </div>
+        <a href="/blogs">Blogs</a>
+        <a href="/about">About</a>
+        <a href="/submit">Submit Recipe</a>
+        <button onclick="openExplorePanel()">Explore</button>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-left">
+        <h2>Discover Simple, Delicious and Fast Recipes!</h2>
+        <p>A Recipe is Soulless... The essence of Recipe must Come from you. The Cook.</p>
+        <button onclick="openExplorePanel()">Explore</button>
+      </div>
+      <div class="hero-right">
+        <img src="/static/images/rasoiyo_bowl.png" alt="Rasoiyo Bowl">
+      </div>
+    </div>
+
+    <div id="results" class="results"></div>
+  </div>
+
+  <script>
+    window.onload = () => {
+      window.originalHomeHTML = document.getElementById('mainContent').innerHTML;
+    };
+
+    function openExplorePanel() {
+      document.getElementById('mainContent').innerHTML = `
+        <div class="navbar">
+          <div class="navbar-left">
+            <img src="/static/images/rasoiyo_logo.png" alt="Rasoiyo Logo">
+          </div>
+          <div class="navbar-right">
+            <button onclick="goBackToHome()">Back to Home</button>
+          </div>
+        </div>
+
+        <div style="padding: 60px;">
+          <h2 style="color:#611378; font-size:2rem; text-align:center;">“A recipe is soulless... the essence must come from you — the cook.”</h2>
+          <p style="text-align:center; font-size:1.3rem; margin-top:20px;">Choose what you're craving today:</p>
+
+          <form id="exploreForm" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px; margin-top:40px;">
+            <div>
+              <h3 style="color:#ff6600;">🍽️ Cuisine</h3>
+              ${['Indian','North Indian','South Indian','Mangalorean','Kerala','Gujarati','Rajasthani','Bengali'].map(c => `
+                <label><input type="checkbox" name="cuisine" value="${c}"> ${c}</label><br>
+              `).join('')}
+            </div>
+            <div>
+              <h3 style="color:#ff6600;">🧑‍🍳 Course</h3>
+              ${['Appetizer','Side Dish','Main Course','Lunch','Dinner','Breakfast','Snack'].map(c => `
+                <label><input type="checkbox" name="course" value="${c}"> ${c}</label><br>
+              `).join('')}
+            </div>
+            <div>
+              <h3 style="color:#ff6600;">🥗 Diet</h3>
+                            ${['Vegetarian','Non Vegetarian','No Onion','No Garlic','High Protein','Gluten Free','Diabetic Friendly'].map(d => `
+                <label><input type="checkbox" name="diet" value="${d}"> ${d}</label><br>
+              `).join('')}
+            </div>
+            <div>
+              <h3 style="color:#ff6600;">⏱️ Prep Time</h3>
+              ${['15','30','45','60','90','120'].map(t => `
+                <label><input type="checkbox" name="prep_time" value="${t}"> ${t} min</label><br>
+              `).join('')}
+            </div>
+          </form>
+
+          <div style="text-align:center; margin-top:40px;">
+            <button onclick="submitExploreFilters()">Show Recipes</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function submitExploreFilters() {
+      const form = document.getElementById('exploreForm');
+      const filters = ['cuisine', 'course', 'diet', 'prep_time'];
+      const selected = {};
+
+      filters.forEach(f => {
+        selected[f] = Array.from(form.querySelectorAll(`input[name="${f}"]:checked`)).map(cb => cb.value);
+      });
+
+      fetch('/get_dishes', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(selected)
+      })
+      .then(res => res.json())
+      .then(data => {
+        window.lastResults = data;
+        const cards = data.length ? data.map(r => `
+          <div class="card" onclick="showDishDetails('${r.name.replace(/'/g, "\\'")}')">
+            ${r.image_filename ? `<img src="/static/images/${r.image_filename}" alt="${r.name}">` : ''}
+            <h2>${r.name}</h2>
+          </div>
+        `).join('') : '<p style="text-align:center;">No matching dishes found.</p>';
+
+        document.getElementById('mainContent').innerHTML = `
+          <div class="navbar">
+            <div class="navbar-left">
+              <img src="/static/images/rasoiyo_logo.png" alt="Rasoiyo Logo">
+            </div>
+            <div class="navbar-right">
+              <button onclick="openExplorePanel()">Back to Explore</button>
+            </div>
+          </div>
+          <div id="results" class="results">${cards}</div>
+        `;
+      });
+    }
+
+    async function loadRecipes(dietType) {
+      window.lastDietType = dietType;
+
+      const res = await fetch('/search', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({dish_name: '', diet: dietType})
+      });
+
+      const data = await res.json();
+      window.lastResults = data;
+
+      const cards = data.length ? data.map(r => `
+        <div class="card" onclick="showDishDetails('${r.name.replace(/'/g, "\\'")}')">
+          ${r.image_filename ? `<img src="/static/images/${r.image_filename}" alt="${r.name}">` : ''}
+          <h2>${r.name}</h2>
+        </div>
+      `).join('') : '<p style="text-align:center;">No matching dishes found.</p>';
+
+      document.getElementById('mainContent').innerHTML = `
+        <div class="navbar">
+          <div class="navbar-left">
+            <img src="/static/images/rasoiyo_logo.png" alt="Rasoiyo Logo">
+          </div>
+          <div class="navbar-right">
+            <button onclick="goBackToHome()">Back to Home</button>
+          </div>
+        </div>
+        <div id="results" class="results">${cards}</div>
+      `;
+    }
+
+    function showDishDetails(dishName) {
+      const dish = window.lastResults.find(d => d.name === dishName);
+      if (!dish) return;
+
+      document.getElementById('mainContent').innerHTML = `
+        <div class="navbar">
+          <div class="navbar-left">
+            <img src="/static/images/rasoiyo_logo.png" alt="Rasoiyo Logo">
+          </div>
+          <div class="navbar-right">
+            <button onclick="loadRecipes(window.lastDietType || 'vegetarian')">Back to Recipes</button>
+          </div>
+        </div>
+
+        <div class="dish-details">
+          <h2>${dish.name}</h2>
+          ${dish.image_filename ? `
+            <div style="text-align:center;">
+              <img src="/static/images/${dish.image_filename}" alt="${dish.name}" style="width:400px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.2); margin-bottom:20px;">
+            </div>
+          ` : ''}
+          <h3>Diet:</h3> <p>${dish.diet}</p>
+          <h3>Course:</h3> <p>${dish.course || 'N/A'}</p>
+          <h3>Cuisine:</h3> <p>${dish.cuisine || 'N/A'}</p>
+          <h3>Preparation Time:</h3> <p>${dish.prep_time || dish.preparation_time || 'N/A'}</p>
+          <h3>Description:</h3> <p>${dish.description || 'No description available.'}</p>
+          <h3>Ingredients:</h3> <p>${dish.ingredients ? dish.ingredients.replace(/\n/g, '<br>') : 'N/A'}</p>
+          <h3>Instructions:</h3> <p>${dish.instructions ? dish.instructions.replace(/\n/g, '<br>') : 'N/A'}</p>
+
+          <button onclick="loadRecipes(window.lastDietType || 'vegetarian')">Back to Recipes</button>
+        </div>
+      `;
+    }
+
+    function goBackToHome() {
+      document.getElementById('mainContent').innerHTML = window.originalHomeHTML;
+    }
+  </script>
+</body>
+</html>
