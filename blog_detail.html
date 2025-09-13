@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ blog.title }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-left">
+      <img src="/static/images/rasoiyo_logo.png" alt="Rasoiyo Logo">
+    </div>
+    <div class="navbar-right">
+      <a href="/">Home</a>
+      <a href="/blogs">Blogs</a>
+      <a href="#">About</a>
+      <button>Submit Recipe</button>
+    </div>
+  </div>
+
+  <div class="blog-section">
+    <h1>{{ blog.title }}</h1>
+    <div class="blog-content">
+      {{ blog.content | safe }}
+    </div>
+    <a href="/blogs">← Back to Blogs</a>
+  </div>
+</body>
+</html>
