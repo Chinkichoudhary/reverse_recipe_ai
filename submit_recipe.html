@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Submit a Recipe | Rasoiyo</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fffaf0;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .navbar-left img {
+      height: 50px;
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .navbar-right a, .navbar-right button {
+      text-decoration: none;
+      color: #000;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .submit-btn {
+      background-color: #000;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+    }
+
+    .form-container {
+      max-width: 800px;
+      margin: 60px auto;
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .form-container h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #611378;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #fffaf0;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group input[type="file"] {
+      padding: 6px;
+    }
+
+    .form-container button {
+      background-color: #000;
+      color: #fff;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .form-container button:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-left">
+      <img src="/static/images/rasoiyo_logo.png" alt="Rasoiyo Logo">
+    </div>
+    <div class="navbar-right">
+      <a href="#" onclick="loadRecipes('vegetarian')">Recipes</a>
+      <a href="/blogs">Blogs</a>
+      <a href="/about">About</a>
+      <a href="/submit">Submit Recipe</a>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <h1>Submit Your Recipe</h1>
+    <form action="/submit" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="name">Dish Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="diet">Diet Type</label>
+        <select id="diet" name="diet" required>
+          <option value="">Select</option>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="non vegetarian">Non Vegetarian</option>
+          <option value="high protein">High Protein</option>
+          <option value="high protein vegetarian">High Protein Vegetarian</option>
+          <option value="high protein non vegetarian">High Protein Non Vegetarian</option>
+          <option value="gluten free">Gluten Free</option>
+          <option value="diabetic friendly">Diabetic Friendly</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="course">Course</label>
+        <input type="text" id="course" name="course">
+      </div>
+
+      <div class="form-group">
+        <label for="cuisine">Cuisine</label>
+        <input type="text" id="cuisine" name="cuisine">
+      </div>
+
+      <div class="form-group">
+        <label for="prep_time">Preparation Time</label>
+        <input type="text" id="prep_time" name="prep_time">
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="ingredients">Ingredients</label>
+        <textarea id="ingredients" name="ingredients"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="instructions">Instructions</label>
+        <textarea id="instructions" name="instructions"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Upload Image</label>
+        <input type="file" id="image" name="image">
+      </div>
+
+      <button type="submit">Submit Recipe</button>
+    </form>
+  </div>
+
+  <script>
+    function loadRecipes(dietType) {
+      fetch('/search', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({dish_name: '', diet: dietType})
+      })
+      .then(res => res.json())
+      .then(data => {
+        window.lastResults = data;
+        window.lastDietType = dietType;
+        const cards = data.map(r => `
+          <div class="card" onclick="showDishDetails('${r.name.replace(/'/g, "\\'")}')">
+            ${r.image_filename ? `<img src="/static/images/${r.image_filename}" alt="${r.name}">` : ''}
+            <h2>${r.name}</h2>
+          </div>
+        `).join('');
+        document.body.innerHTML = `
+          <div class="navbar">
+            <div class="navbar-left">
+              <img src="/static/images/rasoiyo_logo.png" alt="Rasoiyo Logo">
+            </div>
+            <div class="navbar-right">
+              <button onclick="location.reload()">Back to Home</button>
+            </div>
+          </div>
+          <div class="results" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px;">
+            ${cards}
+          </div>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>
