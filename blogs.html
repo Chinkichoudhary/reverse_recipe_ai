@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rasoiyo Blogs</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-left">
+      <img src="/static/images/rasoiyo_logo.png" alt="Rasoiyo Logo">
+    </div>
+    <div class="navbar-right">
+      <a href="/">Home</a>
+      <a href="/blogs">Blogs</a>
+      <a href="#">About</a>
+      <button>Submit Recipe</button>s
+    </div>
+  </div>
+
+  <div class="blog-section">
+    <h2>Rasoiyo Blogs</h2>
+    {% for blog in blogs %}
+    <div class="blog-card">
+      <h3>{{ blog.title }}</h3>
+      <p>{{ blog.summary }}</p>
+      <a href="/blogs/{{ blog.slug }}">Read More</a>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>
