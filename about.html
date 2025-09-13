@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About Rasoiyo</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fffaf0;
+      color: #333;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .navbar-left img {
+      height: 50px;
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .navbar-right a, .navbar-right button {
+      text-decoration: none;
+      color: #000;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .submit-btn {
+      background-color: #000;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+    }
+
+    .about-section {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 40px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .about-section h1 {
+      font-size: 2.5rem;
+      color: #611378;
+      margin-bottom: 20px;
+    }
+
+    .about-section h2 {
+      font-size: 1.6rem;
+      margin-top: 30px;
+      color: #ff6600;
+    }
+
+    .about-section p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-top: 10px;
+    }
+
+    .about-section ul {
+      margin-top: 10px;
+      padding-left: 20px;
+    }
+
+    .about-section ul li {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-left">
+      <img src="/static/images/rasoiyo_logo.png" alt="Rasoiyo Logo">
+    </div>
+    <div class="navbar-right">
+      <a href="#" onclick="loadRecipes('vegetarian')">Recipes</a>
+      <a href="/blogs">Blogs</a>
+      <a href="/about">About</a>
+      <button class="submit-btn">Submit Recipe</button>
+    </div>
+  </div>
+
+  <div class="about-section">
+    <h1>About Rasoiyo</h1>
+    <p>At Rasoiyo, we believe cooking is more than just a task — it’s an expression of soul, instinct, and care. Whether you're a seasoned chef or a curious beginner, our goal is to help you discover recipes that are simple, delicious, and fast — without compromising on flavor or nutrition.</p>
+
+    <h2>What Makes Rasoiyo Different</h2>
+    <ul>
+      <li>Curated recipes for every diet: vegetarian, high-protein, gluten-free, diabetic-friendly, and more</li>
+      <li>Clean, intuitive design that makes browsing feel effortless</li>
+      <li>Real-time search and instant dish previews</li>
+      <li>Blogs that explore food culture, spice science, and seasonal favorites</li>
+    </ul>
+
+    <h2>Who We Serve</h2>
+    <ul>
+      <li>Home cooks looking for quick inspiration</li>
+      <li>Foodies who want to explore regional Indian flavors</li>
+      <li>Health-conscious eaters who want clarity and variety</li>
+      <li>Anyone who believes cooking is an act of care</li>
+    </ul>
+
+    <h2>Built With Passion</h2>
+    <p>Rasoiyo is built by developers and designers who care deeply about both technical polish and emotional impact. Every page is crafted to feel trustworthy, delightful, and globally relevant.</p>
+
+    <h2>Get Involved</h2>
+    <ul>
+      <li>Submit your own recipe and share your culinary story</li>
+      <li>Send us feedback or feature requests — we’re always listening</li>
+      <li>Follow our blog for cooking tips, cultural insights, and seasonal favorites</li>
+    </ul>
+  </div>
+
+  <script>
+    function loadRecipes(dietType) {
+      fetch('/search', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({dish_name: '', diet: dietType})
+      })
+      .then(res => res.json())
+      .then(data => {
+        window.lastResults = data;
+        window.lastDietType = dietType;
+        const cards = data.map(r => `
+          <div class="card" onclick="showDishDetails('${r.name.replace(/'/g, "\\'")}')">
+            ${r.image_filename ? `<img src="/static/images/${r.image_filename}" alt="${r.name}">` : ''}
+            <h2>${r.name}</h2>
+          </div>
+        `).join('');
+        document.body.innerHTML = `
+          <div class="navbar">
+            <div class="navbar-left">
+              <img src="/static/images/rasoiyo_logo.png" alt="Rasoiyo Logo">
+            </div>
+            <div class="navbar-right">
+              <button onclick="location.reload()">Back to Home</button>
+            </div>
+          </div>
+          <div class="results" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px;">
+            ${cards}
+          </div>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>
